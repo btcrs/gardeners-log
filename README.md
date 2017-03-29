@@ -1,6 +1,6 @@
 # gardeners-log 
 
-![banner](./img/banner.png)
+![banner](./img/log.png)
 
 > Serverless gateway for a CRUD API that maintains my garden's data
 
