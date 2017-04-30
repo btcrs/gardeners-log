@@ -1,4 +1,4 @@
-service: victors-api
+service: vics-api
 
 frameworkVersion: ">=1.1.0 <2.0.0"
 
@@ -18,9 +18,18 @@ provider:
         - dynamodb:DeleteItem
       Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE}"
   apiKeys:
-   - DataLogger
+   - Victor 
 
 functions:
+  relay:
+    handler: datum/relay.relay
+    events:
+      - http:
+          path: datum/relay.relay
+          method: post
+          cors: true
+          integration: lambda
+
   create:
     handler: datum/create.create
     events:
@@ -55,7 +64,7 @@ functions:
           method: put
           integration: lambda
           authorizer:
-            arn: arn:aws:lambda:us-east-1:858808734556:function:victors-api-dev-authorize
+            arn: arn:aws:lambda:us-east-1:858808734556:function:vics-api-authentication-dev-authorize
             resultTtlInSeconds: 15
             identitySource: method.request.header.Authorization
             identityValidationExpression: .*
@@ -69,7 +78,7 @@ functions:
           cors: true
           integration: lambda
           authorizer:
-            arn: arn:aws:lambda:us-east-1:858808734556:function:victors-api-dev-authorize
+            arn: arn:aws:lambda:us-east-1:858808734556:function:vics-api-authentication-dev-authorize
             resultTtlInSeconds: 15
             identitySource: method.request.header.Authorization
             identityValidationExpression: .*
